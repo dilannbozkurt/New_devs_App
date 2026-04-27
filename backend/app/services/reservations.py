@@ -6,8 +6,14 @@ async def calculate_monthly_revenue(property_id: str, month: int, year: int, db_
     """
     Calculates revenue for a specific month.
     """
+    #BUG
+    #start_date = datetime(year, month, 1)
+    from datetime import timezone
 
-    start_date = datetime(year, month, 1)
+    start_date = datetime(year, month, 1, tzinfo=timezone.utc)
+
+
+
     if month < 12:
         end_date = datetime(year, month + 1, 1)
     else:
@@ -29,7 +35,10 @@ async def calculate_monthly_revenue(property_id: str, month: int, year: int, db_
     # result = await db.fetch_val(query, property_id, tenant_id, start_date, end_date)
     # return result or Decimal('0')
     
-    return Decimal('0') # Placeholder for now until DB connection is finalized
+    # BUG
+   # return Decimal('0') # Placeholder for now until DB connection is finalized
+   result = await db.fetch_val(query, property_id, tenant_id, start_date, end_date)
+   return result or Decimal('0')
 
 async def calculate_total_revenue(property_id: str, tenant_id: str) -> Dict[str, Any]:
     """
@@ -65,7 +74,9 @@ async def calculate_total_revenue(property_id: str, tenant_id: str) -> Dict[str,
                 row = result.fetchone()
                 
                 if row:
-                    total_revenue = Decimal(str(row.total_revenue))
+                    #BUG
+                    #total_revenue = Decimal(str(row.total_revenue))
+                    total_revenue = Decimal(row.total_revenue).quantize(Decimal("0.01"))
                     return {
                         "property_id": property_id,
                         "tenant_id": tenant_id,
@@ -90,13 +101,15 @@ async def calculate_total_revenue(property_id: str, tenant_id: str) -> Dict[str,
         
         # Create property-specific mock data for testing when DB is unavailable
         # This ensures each property shows different figures
-        mock_data = {
-            'prop-001': {'total': '1000.00', 'count': 3},
-            'prop-002': {'total': '4975.50', 'count': 4}, 
-            'prop-003': {'total': '6100.50', 'count': 2},
-            'prop-004': {'total': '1776.50', 'count': 4},
-            'prop-005': {'total': '3256.00', 'count': 3}
-        }
+        #BUG
+        # mock_data = {
+        #     'prop-001': {'total': '1000.00', 'count': 3},
+        #     'prop-002': {'total': '4975.50', 'count': 4}, 
+        #     'prop-003': {'total': '6100.50', 'count': 2},
+        #     'prop-004': {'total': '1776.50', 'count': 4},
+        #     'prop-005': {'total': '3256.00', 'count': 3}
+        # }
+        raise Exception("Database unavailable")
         
         mock_property_data = mock_data.get(property_id, {'total': '0.00', 'count': 0})
         

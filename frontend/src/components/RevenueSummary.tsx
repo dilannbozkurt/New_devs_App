@@ -10,7 +10,7 @@ interface RevenueData {
 
 interface RevenueSummaryProps {
     propertyId?: string;
-    debugTenant?: string;
+    debugTenant?: string; 
     showRaw?: boolean;
 }
 
@@ -19,6 +19,8 @@ export const RevenueSummary: React.FC<RevenueSummaryProps> = ({ propertyId = 'pr
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
+    //BUG
+    //const activeTenant = debugTenant || 'candidate';
     const activeTenant = debugTenant;
 
     useEffect(() => {
@@ -61,7 +63,10 @@ export const RevenueSummary: React.FC<RevenueSummaryProps> = ({ propertyId = 'pr
     if (error) return <div className="p-4 text-red-500 bg-red-50 rounded-lg">{error}</div>;
     if (!data) return null;
 
+    //BUG
+    //const displayTotal = Math.round(data.total_revenue * 100) / 100;
     const displayTotal = data.total_revenue;
+
     return (
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-300">
             {showRaw && (
