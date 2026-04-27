@@ -19,7 +19,7 @@ export const RevenueSummary: React.FC<RevenueSummaryProps> = ({ propertyId = 'pr
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
-    //BUG
+    //BUG 1
     //const activeTenant = debugTenant || 'candidate';
     const activeTenant = debugTenant;
 
@@ -63,7 +63,7 @@ export const RevenueSummary: React.FC<RevenueSummaryProps> = ({ propertyId = 'pr
     if (error) return <div className="p-4 text-red-500 bg-red-50 rounded-lg">{error}</div>;
     if (!data) return null;
 
-    //BUG
+    //BUG 2
     //const displayTotal = Math.round(data.total_revenue * 100) / 100;
     const displayTotal = data.total_revenue;
 

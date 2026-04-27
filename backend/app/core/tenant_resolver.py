@@ -86,7 +86,7 @@ class TenantResolver:
         if user_email == "ocean@propertyflow.com":
             return "tenant-b"
         if user_email == "candidate@propertyflow.com":
-            #BUG
+            #BUG 7
             #return "tenant-a"
             return TenantResolver.resolve_tenant_from_token(token_payload)
             
